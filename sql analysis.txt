@@ -1,0 +1,136 @@
+1)Total sales by month
+
+SELECT 
+    YEAR(Order_Date) AS Year,
+    MONTH(Order_Date) AS Month,
+    ROUND(SUM(Unit_Price_USD * Quantity), 2) AS Total_Sales
+FROM 
+    full_merge_table
+GROUP BY 
+    YEAR(Order_Date), MONTH(Order_Date)
+ORDER BY 
+    Year, Month;
+
+2) Sum of Total Revenue (Grouped by StoreKey)
+
+SELECT 
+    StoreKey,
+    ROUND(SUM(Unit_Price_USD * Quantity), 2) AS Total_Revenue
+FROM 
+    full_merge_table
+GROUP BY 
+    StoreKey
+ORDER BY 
+    Total_Revenue DESC;
+
+3)Top Preferable Products (Based on Quantity)
+
+SELECT 
+    Product_Name,
+    Brand,
+    Subcategory,
+    SUM(Quantity) AS Total_Quantity_Sold
+FROM 
+    full_merge_table
+GROUP BY 
+    Product_Name, Brand, Subcategory
+ORDER BY 
+    Total_Quantity_Sold DESC
+LIMIT 10;
+
+4) Top Revenue Products
+
+SELECT 
+    Product_Name,
+    Brand,
+    Subcategory,
+    ROUND(SUM(Unit_Price_USD * Quantity), 2) AS Total_Revenue
+FROM 
+    full_merge_table
+GROUP BY 
+    Product_Name, Brand, Subcategory
+ORDER BY 
+    Total_Revenue DESC
+LIMIT 10;
+
+5) Overall Female Count
+
+SELECT COUNT(Gender) AS Female_count 
+FROM full_merge_table
+WHERE Gender = 'Female';
+
+6)Overall Male Count
+
+SELECT COUNT(Gender) AS Male_count 
+FROM full_merge_table
+WHERE Gender = 'Male';
+
+7)Count of Customers by Country
+
+SELECT Country_x, COUNT(DISTINCT CustomerKey) AS customer_count 
+FROM full_merge_table 
+GROUP BY Country_x
+ORDER BY customer_count DESC;
+
+8) Overall Count of Customers
+
+SELECT COUNT(DISTINCT CustomerKey) AS customer_count 
+FROM full_merge_table;
+
+9) Count of Stores by Country
+
+SELECT Country_y, COUNT(StoreKey) 
+FROM full_merge_table
+GROUP BY Country_y 
+ORDER BY COUNT(StoreKey) DESC;
+
+10)Store-wise Sales
+
+SELECT StoreKey, Country_y, SUM(Unit_Price_USD * Quantity) AS total_sales_amount 
+FROM full_merge_table
+GROUP BY StoreKey, Country_y;
+
+11)Overall Selling Amount
+
+SELECT SUM(Unit_Price_USD * Quantity) AS total_sales_amount 
+FROM full_merge_table;
+
+12)Brand Count
+
+SELECT Brand, COUNT(Brand) AS brand_count 
+FROM full_merge_table
+GROUP BY Brand;
+
+13)Brand-wise Selling Amount
+
+SELECT Brand, ROUND(SUM(Unit_Price_USD * Quantity), 2) AS sales_amount
+FROM full_merge_table
+GROUP BY Brand;
+
+14)Country Overall Sales
+
+SELECT Country_y, SUM(Unit_Price_USD * Quantity) AS total_sales 
+FROM full_merge_table
+GROUP BY Country_y;
+
+14)Year-wise Brand Sales
+
+SELECT YEAR(Order_Date) AS Year, Brand, 
+       ROUND(SUM(Unit_Price_USD * Quantity), 2) AS year_sales 
+FROM full_merge_table
+GROUP BY YEAR(Order_Date), Brand;
+
+
+15)Month-wise Sales
+
+SELECT MONTH(Order_Date) AS Month, SUM(Unit_Price_USD * Quantity) AS sp_month 
+FROM full_merge_table
+GROUP BY MONTH(Order_Date);
+
+
+17)Year-wise Sales
+
+SELECT YEAR(Order_Date) AS Year, SUM(Unit_Price_USD * Quantity) AS sp_month 
+FROM full_merge_table
+GROUP BY YEAR(Order_Date);
+
